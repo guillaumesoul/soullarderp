@@ -8,19 +8,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class HomeController extends AbstractController
+//class HomeController extends AbstractController
+class HomeController extends AbstractExtendedController
 {
     /**
      * @Route("/home", name="home")
      */
-    public function index(SerializerInterface $serializer)
+    public function index()
     {
         $user = $this->getDoctrine()->getRepository(User::class)->find(1);
-        $json = $serializer->serialize(
-            $user,
-            'json', ['groups' => 'user']
-        );
-        //return $this->render('base.html.twig');
-        return new JsonResponse($json);
+        return $this->jsonResponse($this->serialize($user));
     }
 }
