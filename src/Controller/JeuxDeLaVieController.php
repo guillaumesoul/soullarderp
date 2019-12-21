@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Jeuxdelavie\Tache;
 use App\Form\Jeuxdelavie\TacheType;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class JeuxDeLaVieController extends AbstractExtendedController
 {
@@ -19,7 +22,14 @@ class JeuxDeLaVieController extends AbstractExtendedController
         $rendered = $this->renderView('jeuxdelavie/form.html.twig',
             ['form' => $formView]
         );
+        $all = $tacheForm->all();
         $type = gettype($rendered);
+
+
+        $normalizers = [new ObjectNormalizer()];
+        $encoders = [new JsonEncoder()];
+        $serializer = new \Symfony\Component\Serializer\Serializer($normalizers, $encoders);
+        $normalized = $serializer->serialize($tacheForm, 'json');
         return $this->jsonResponse($rendered);
     }
 }

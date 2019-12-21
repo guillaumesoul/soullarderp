@@ -12,11 +12,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 class HomeController extends AbstractExtendedController
 {
     /**
-     * @Route("/home", name="home")
+     * @Route("/", name="home")
      */
     public function index()
     {
         $user = $this->getDoctrine()->getRepository(User::class)->find(1);
-        return $this->jsonResponse($this->serialize($user));
+        //return $this->jsonResponse($this->serialize($user));
+        return $this->render('home/index.html.twig');
     }
 }
