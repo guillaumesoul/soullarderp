@@ -25,6 +25,7 @@ class AbstractExtendedController extends AbstractController
 
     public function jsonResponse($data, int $httpCode = 200, $headers = [], $json = true)
     {
+
         return new JsonResponse($data, 200, [], $json);
     }
 

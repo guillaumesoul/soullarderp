@@ -4,9 +4,11 @@ namespace App\Entity\Jeuxdelavie;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Jeuxdelavie\TacheRepository")
+ * @ApiResource
  */
 class Tache
 {
