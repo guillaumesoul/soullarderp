@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Jeuxdelavie\TacheDeclaration;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -34,6 +37,16 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Jeuxdelavie\TacheDeclaration", mappedBy="user")
+     */
+    private $tacheDeclarations;
+
+    public function __construct()
+    {
+        $this->tacheDeclarations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -111,5 +124,36 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|TacheDeclaration[]
+     */
+    public function getTacheDeclarations(): Collection
+    {
+        return $this->tacheDeclarations;
+    }
+
+    public function addTacheDeclaration(TacheDeclaration $tacheDeclaration): self
+    {
+        if (!$this->tacheDeclarations->contains($tacheDeclaration)) {
+            $this->tacheDeclarations[] = $tacheDeclaration;
+            $tacheDeclaration->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTacheDeclaration(TacheDeclaration $tacheDeclaration): self
+    {
+        if ($this->tacheDeclarations->contains($tacheDeclaration)) {
+            $this->tacheDeclarations->removeElement($tacheDeclaration);
+            // set the owning side to null (unless already changed)
+            if ($tacheDeclaration->getUser() === $this) {
+                $tacheDeclaration->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
